@@ -1,7 +1,96 @@
+import Slider from "../../components/slider/slider";
+import { singlePostData, userData } from "../../lib/list_mock_data";
+import Map from "../../components/map/map";
 import "./details.scss";
 
 const ListDetails = () => {
-  return <div className="details">ListDetails</div>;
+  return (
+    <div className="detail-page">
+      <div className="details">
+        <div className="wrapper">
+          <Slider images={singlePostData.images} />
+          <div className="info">
+            <div className="top">
+              <div className="post">
+                <h1>{singlePostData.title}</h1>
+                <div className="address">
+                  <img src="pin.png" alt="location-pin" />
+                  <span>{singlePostData.address}</span>
+                </div>
+                <div className="price">$ {singlePostData.price}</div>
+              </div>
+              <div className="user">
+                <img src={userData.img} alt="" />
+                <span>{userData.name}</span>
+              </div>
+            </div>
+            <div className="bottom">{singlePostData.description}</div>
+          </div>
+        </div>
+      </div>
+      <div className="features">
+        <div className="wrapper">
+          <p className="title">General</p>
+          <div className="list-vertical">
+            <div className="feature">
+              <img src="utility.png" alt="" />
+              <div className="feature-text">
+                <span>Utilities</span>
+                <p>Renter is responsible</p>
+              </div>
+            </div>
+            <div className="feature">
+              <img src="pet.png" alt="" />
+              <div className="feature-text">
+                <span>Pet Policy</span>
+                <p>Pets Allowed</p>
+              </div>
+            </div>
+            <div className="feature">
+              <img src="fee.png" alt="" />
+              <div className="feature-text">
+                <span>Property Fees</span>
+                <p>Must have 3x the rent in total household income</p>
+              </div>
+            </div>
+          </div>
+          <p className="title">Sizes</p>
+          <div className="sizes">
+            <div className="size">
+              <img src="size.png" alt="size" />
+              <span>80 sqft</span>
+            </div>
+            <div className="size">
+              <img src="bed.png" alt="bed" />
+              <span>2 beds</span>
+            </div>
+            <div className="size">
+              <img src="bath.png" alt="bathroom" />
+              <span>1 bathroom</span>
+            </div>
+          </div>
+          <p className="title">Nearby Places</p>
+          <div className="list-horizontal"></div>
+          <p className="title">Location</p>
+          <div className="map-container">
+            <Map items={[singlePostData]} />
+          </div>
+
+          <div className="buttons">
+            <button>
+              <img src="chat.png" alt="chat-icon" />
+              Send a Message
+            </button>
+
+            <button>
+              <img src="save.png" alt="chat-icon" />
+              Save the Place
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ListDetails;
