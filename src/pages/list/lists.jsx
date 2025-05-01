@@ -1,5 +1,6 @@
 import ListCard from "../../components/card/list-card";
 import Filter from "../../components/filter/filter";
+import Map from "../../components/map/map";
 import { listData } from "../../lib/list_mock_data";
 import "./lists.scss";
 
@@ -14,7 +15,9 @@ const ListsPage = () => {
           ))}
         </div>
       </div>
-      <div className="map-container">Map</div>
+      <div className="map-container">
+        <Map items={listData} />
+      </div>
     </div>
   );
 };
