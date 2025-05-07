@@ -6,6 +6,7 @@ import ListDetails from "./pages/list-detail/details";
 import Profile from "./pages/profile-page/profile";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
+import ProfileUpdatePage from "./pages/profile-update/profile-update";
 
 function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/profile/update",
+          element: <ProfileUpdatePage />,
         },
       ],
     },
