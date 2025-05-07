@@ -2,10 +2,13 @@ import { useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/api-request";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const { updateUser } = useAuthContext();
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -22,8 +25,7 @@ function Login() {
         email,
         password,
       });
-
-      localStorage.setItem("user", JSON.stringify(response.data));
+      updateUser(response.data);
       navigate("/");
     } catch (error) {
       setError(error.response.data.message);
@@ -36,7 +38,7 @@ function Login() {
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Welcome back</h1>
-          <input name="email" type="text" placeholder="Username" />
+          <input name="email" type="text" placeholder="Email" />
           <input name="password" type="password" placeholder="Password" />
           <button disabled={isLoading}>Login</button>
           {error && <span>{error}</span>}

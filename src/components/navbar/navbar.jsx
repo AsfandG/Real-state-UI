@@ -1,11 +1,15 @@
 import { useState } from "react";
 import "./navbar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const user = true;
+  const { currentUser } = useAuthContext();
+
+  const { userInfo } = currentUser ?? {};
+  const navigate = useNavigate();
   return (
     <nav>
       <div className="left">
@@ -19,13 +23,16 @@ function Navbar() {
         <a href="/">Agents</a>
       </div>
       <div className="right">
-        {user ? (
+        {currentUser ? (
           <div className="user">
             <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src={
+                userInfo.avatar ||
+                "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg"
+              }
               alt=""
             />
-            <span>John Doe</span>
+            <span className="username">{userInfo.username}</span>
             <Link to="/profile" className="profile">
               <div className="notification">3</div>
               <span>Profile</span>
@@ -33,10 +40,15 @@ function Navbar() {
           </div>
         ) : (
           <>
-            <a href="/">Sign in</a>
-            <a href="/" className="register">
+            <button onClick={() => navigate("/login")} className="authButton">
+              Sign in
+            </button>
+            <button
+              onClick={() => navigate("/register")}
+              className="authButton register"
+            >
               Sign up
-            </a>
+            </button>
           </>
         )}
         <div className="menuIcon">

@@ -3,19 +3,26 @@ import Chat from "../../components/chat/chat";
 import List from "../../components/list/list";
 import apiRequest from "../../lib/api-request";
 import "./profile.scss";
+import { useEffect } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Profile = () => {
   const navigate = useNavigate();
 
+  const { updateUser, currentUser } = useAuthContext();
+
+  const { userInfo } = currentUser ?? {};
+
   async function handleLogout() {
     try {
-      const response = await apiRequest.post("/auth/logout");
-      localStorage.removeItem("user");
+      await apiRequest.post("/auth/logout");
+      updateUser(null);
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   }
+
   return (
     <div className="profile-page">
       <div className="details">
@@ -28,15 +35,18 @@ const Profile = () => {
             <span>
               Avatar:{" "}
               <img
-                src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src={
+                  userInfo.avatar ||
+                  "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg"
+                }
                 alt="user-avatar"
               />
             </span>
             <span>
-              Username: <b>Jane Doe</b>
+              Username: <b>{userInfo.username}</b>
             </span>
             <span>
-              Email: <b>jane@gmail.com</b>
+              Email: <b>{userInfo.email}</b>
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
