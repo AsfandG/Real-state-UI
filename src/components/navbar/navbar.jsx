@@ -8,14 +8,13 @@ function Navbar() {
 
   const { currentUser } = useAuthContext();
 
-  const { userInfo } = currentUser ?? {};
   const navigate = useNavigate();
   return (
     <nav>
       <div className="left">
         <a href="/" className="logo">
           <img src="/logo.png" alt="" />
-          <span>LamaEstate</span>
+          <span>Asfanora</span>
         </a>
         <a href="/">Home</a>
         <a href="/">About</a>
@@ -27,12 +26,12 @@ function Navbar() {
           <div className="user">
             <img
               src={
-                userInfo.avatar ||
+                currentUser?.avatar ||
                 "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg"
               }
               alt=""
             />
-            <span className="username">{userInfo.username}</span>
+            <span className="username">{currentUser?.username}</span>
             <Link to="/profile" className="profile">
               <div className="notification">3</div>
               <span>Profile</span>

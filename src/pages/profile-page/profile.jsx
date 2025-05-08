@@ -3,15 +3,12 @@ import Chat from "../../components/chat/chat";
 import List from "../../components/list/list";
 import apiRequest from "../../lib/api-request";
 import "./profile.scss";
-import { useEffect } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Profile = () => {
   const navigate = useNavigate();
 
   const { updateUser, currentUser } = useAuthContext();
-
-  const { userInfo } = currentUser ?? {};
 
   async function handleLogout() {
     try {
@@ -38,17 +35,17 @@ const Profile = () => {
               Avatar:{" "}
               <img
                 src={
-                  userInfo.avatar ||
+                  currentUser?.avatar ||
                   "https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg"
                 }
                 alt="user-avatar"
               />
             </span>
             <span>
-              Username: <b>{userInfo.username}</b>
+              Username: <b>{currentUser?.username}</b>
             </span>
             <span>
-              Email: <b>{userInfo.email}</b>
+              Email: <b>{currentUser?.email}</b>
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
