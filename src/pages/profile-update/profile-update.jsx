@@ -3,6 +3,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import apiRequest from "../../lib/api-request";
 import "./profile-update.scss";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function ProfileUpdatePage() {
   const { updateUser, currentUser } = useAuthContext();
@@ -13,16 +14,12 @@ function ProfileUpdatePage() {
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const { username, email, password } = Object.fromEntries(formData);
 
     try {
-      const res = await apiRequest.put(`/users/${currentUser.id}`, {
-        username,
-        email,
-        password,
-      });
+      const res = await apiRequest.put(`/users/${currentUser.id}`, formData);
 
       updateUser(res.data);
+      toast.success("Profile updated successfully!");
       navigate("/profile");
     } catch (error) {
       console.log(error);
@@ -34,6 +31,11 @@ function ProfileUpdatePage() {
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
           <h1>Update Profile</h1>
+
+          <div className="item">
+            <label htmlFor="avatar">Avatar</label>
+            <input type="file" name="avatar" />
+          </div>
           <div className="item">
             <label htmlFor="username">Username</label>
             <input
