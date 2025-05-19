@@ -6,7 +6,11 @@ import Pin from "../pin/pin";
 const Map = ({ items }) => {
   return (
     <MapContainer
-      center={[51.505, -0.09]}
+      center={
+        items.lenth === 1
+          ? [items[0].latitude, items[0].longitude]
+          : [51.5074, -0.1278]
+      }
       zoom={7}
       scrollWheelZoom={false}
       className="map"
