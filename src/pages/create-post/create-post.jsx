@@ -77,7 +77,7 @@ function CreatePostPage() {
             </div>
             <div className="item">
               <label htmlFor="images">Upload Images</label>
-              <input type="file" name="images" />
+              <input type="file" name="images" multiple />
             </div>
             <div className="item">
               <label htmlFor="city">City</label>
