@@ -4,51 +4,65 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import apiRequest from "../../lib/api-request";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function CreatePostPage() {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
-  const [images, setImages] = useState([
-    "https://images.pexels.com/photos/30705323/pexels-photo-30705323/free-photo-of-modern-living-room-with-vibrant-decor.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/31267710/pexels-photo-31267710/free-photo-of-modern-open-floor-plan-kitchen-and-living-area.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/31391054/pexels-photo-31391054/free-photo-of-elegant-residential-home-exterior-with-lush-garden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/31473376/pexels-photo-31473376/free-photo-of-cozy-bedroom-in-elegant-modern-home.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  ]);
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   const navigate = useNavigate();
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(previews);
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const inputs = Object.fromEntries(formData);
+    const form = e.target;
+    const inputs = Object.fromEntries(new FormData(form));
+    const formData = new FormData();
+
+    const postData = {
+      title: inputs.title,
+      price: parseInt(inputs.price),
+      address: inputs.address,
+      city: inputs.city,
+      bedroom: parseInt(inputs.bedroom),
+      bathroom: parseInt(inputs.bathroom),
+      type: inputs.type,
+      property: inputs.property,
+      latitude: inputs.latitude,
+      longitude: inputs.longitude,
+    };
+
+    const postDetail = {
+      desc: value,
+      utilities: inputs.utilities,
+      pet: inputs.pet,
+      income: inputs.income,
+      size: parseInt(inputs.size),
+      school: parseInt(inputs.school),
+      bus: parseInt(inputs.bus),
+      restaurant: parseInt(inputs.restaurant),
+    };
+
+    formData.append("postData", JSON.stringify(postData));
+    formData.append("postDetail", JSON.stringify(postDetail));
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     try {
-      const res = await apiRequest.post("/posts", {
-        postData: {
-          title: inputs.title,
-          price: parseInt(inputs.price),
-          address: inputs.address,
-          city: inputs.city,
-          bedroom: parseInt(inputs.bedroom),
-          bathroom: parseInt(inputs.bathroom),
-          type: inputs.type,
-          property: inputs.property,
-          latitude: inputs.latitude,
-          longitude: inputs.longitude,
-          images: images,
-        },
-        postDetail: {
-          desc: value,
-          utilities: inputs.utilities,
-          pet: inputs.pets,
-          income: inputs.income,
-          size: parseInt(inputs.size),
-          school: parseInt(inputs.school),
-          bus: parseInt(inputs.bus),
-          restaurant: parseInt(inputs.restaurant),
-        },
-      });
+      const res = await apiRequest.post("/posts", formData);
       navigate(`/${res.data.id}`);
+      toast.success("New post created!");
     } catch (error) {
       setError(error);
     }
@@ -77,7 +91,12 @@ function CreatePostPage() {
             </div>
             <div className="item">
               <label htmlFor="images">Upload Images</label>
-              <input type="file" name="images" multiple />
+              <input
+                type="file"
+                name="images"
+                multiple
+                onChange={handleImageChange}
+              />
             </div>
             <div className="item">
               <label htmlFor="city">City</label>
@@ -165,8 +184,8 @@ function CreatePostPage() {
         </div>
       </div>
       <div className="sideContainer">
-        {images.map((image, index) => (
-          <img src={image} key={index} alt="post-cover" />
+        {imagePreviews.map((url, index) => (
+          <img src={url} key={index} alt={`preview-${index}`} />
         ))}
       </div>
     </div>
