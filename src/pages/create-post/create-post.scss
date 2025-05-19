@@ -44,8 +44,16 @@
             }
           }
         }
+
+        .sendButtonWrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
         .sendButton {
-          width: 30%;
+          width: 60%;
+          padding: 20px 0;
           border-radius: 5px;
           border: none;
           background-color: teal;
@@ -65,7 +73,10 @@
     gap: 20px;
     align-items: center;
     justify-content: center;
-
+    overflow-y: scroll;
+    height: 100%;
+    padding-top: 120px;
+    padding-bottom: 30px;
     img {
       width: 50%;
       height: 180px;
